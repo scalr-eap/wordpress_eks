@@ -23,6 +23,7 @@ resource "aws_db_instance" "default" {
   username             = "root"
   password             = var.mysql_password
   db_subnet_group_name = aws_db_subnet_group.default.name
+  skip_final_snapshot     = true
 }
 
 output "db_endpoint" {
