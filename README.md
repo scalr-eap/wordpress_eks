@@ -30,6 +30,7 @@ Template can be run as follows:
    1. region
    1. service_name
    1. cluster_name
+   1. MySQL Password
 1. Run `terraform init;terraform apply` and watch the magic happen.
 
 ## Using with Scalr Next-Gen Service Catalog Offering.

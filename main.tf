@@ -29,6 +29,16 @@ provider "kubernetes" {
   load_config_file       = false
 }
 
+resource "kubernetes_secret" "mysql" {
+  metadata {
+    name = "mysql-pass"
+  }
+
+  data = {
+    password = var.mysql_password
+  }
+}
+
 resource "kubernetes_pod" "wordpress" {
   metadata {
     name = "${var.service_name}-pod"
@@ -42,6 +52,19 @@ resource "kubernetes_pod" "wordpress" {
       name  = "${var.service_name}-ct"
       port {
         container_port = 80
+      }
+      env {
+        name  = "WORDPRESS_DB_HOST"
+        value = aws_db_instance.default.endpoint
+      }
+      env {
+        name  = "WORDPRESS_DB_PASSWORD"
+        value_from {
+          secret_key_ref {
+            name = kubernetes_secret.mysql.metadata[0].name
+            key  = "password"
+          }
+        }
       }
     }
   }
