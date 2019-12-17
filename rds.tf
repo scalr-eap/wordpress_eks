@@ -1,12 +1,8 @@
 # Create and RDS Instance for MySQL
 
-data "aws_eks_cluster" "this_cluster" {
-  name = var.cluster_name
-}
-
 resource "aws_db_subnet_group" "default" {
   name       = "main"
-  subnet_ids = "${data.aws_eks_cluster.this_cluster.vpc_config.0.subnet_ids}"
+  subnet_ids = "${data.aws_eks_cluster.this.vpc_config.0.subnet_ids}"
 
   tags = {
     Name = "Group1"
@@ -23,7 +19,8 @@ resource "aws_db_instance" "default" {
   username             = "root"
   password             = var.mysql_password
   db_subnet_group_name = aws_db_subnet_group.default.name
-  skip_final_snapshot     = true
+  vpc_security_group_ids = [ "${data.aws_eks_cluster.this.vpc_config.0.cluster_security_group_id}" ]
+  skip_final_snapshot  = true
 }
 
 output "db_endpoint" {
