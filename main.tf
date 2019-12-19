@@ -22,6 +22,13 @@ data "aws_eks_cluster_auth" "this" {
   name = var.cluster_name
 }
 
+resource "random_string" "random" {
+  length = 6
+  special = false
+  upper = false
+  number = false
+}
+
 provider "kubernetes" {
   host                   = "${data.aws_eks_cluster.this.endpoint}"
   cluster_ca_certificate = "${base64decode(data.aws_eks_cluster.this.certificate_authority.0.data)}"
@@ -31,7 +38,7 @@ provider "kubernetes" {
 
 resource "kubernetes_secret" "mysql" {
   metadata {
-    name = "mysql-pass"
+    name = "mysql-pass-${random_string.random.result}"
   }
 
   data = {
@@ -41,15 +48,15 @@ resource "kubernetes_secret" "mysql" {
 
 resource "kubernetes_pod" "wordpress" {
   metadata {
-    name = "${var.service_name}-pod"
+    name = "${var.service_name}-pod-${random_string.random.result}"
     labels = {
-      App = "${var.service_name}-pod"
+      App = "${var.service_name}-pod-${random_string.random.result}"
     }
   }
   spec {
     container {
       image = "tutum/wordpress"
-      name  = "${var.service_name}-ct"
+      name  = "${var.service_name}-ct-${random_string.random.result}"
       port {
         container_port = 80
       }
@@ -72,7 +79,7 @@ resource "kubernetes_pod" "wordpress" {
 
 resource "kubernetes_service" "wordpress_svc" {
   metadata {
-    name = "${var.service_name}-svc"
+    name = "${var.service_name}-svc-${random_string.random.result}"
   }
   spec {
     selector = {

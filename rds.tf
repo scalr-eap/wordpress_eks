@@ -1,7 +1,7 @@
 # Create and RDS Instance for MySQL
 
 resource "aws_db_subnet_group" "default" {
-  name       = "main"
+  name = "${var.service_name}-dbg-${random_string.random.result}"
   subnet_ids = "${data.aws_eks_cluster.this.vpc_config.0.subnet_ids}"
 
   tags = {
@@ -15,7 +15,7 @@ resource "aws_db_instance" "default" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
-  name                 = "mydb"
+  name                 = "mydb-${random_string.random.result}"
   username             = "root"
   password             = var.mysql_password
   db_subnet_group_name = aws_db_subnet_group.default.name

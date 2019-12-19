@@ -1,0 +1,8 @@
+2019/12/19 15:14:13 [INFO] Terraform version: 0.12.10  
+2019/12/19 15:14:13 [INFO] Go runtime version: go1.12.9
+2019/12/19 15:14:13 [INFO] CLI args: []string{"/usr/local/Cellar/tfenv/1.0.1/versions/0.12.10/terraform", "show"}
+2019/12/19 15:14:13 [DEBUG] Attempting to open CLI config file: /Users/peterg/.terraformrc
+2019/12/19 15:14:13 Loading CLI configuration from /Users/peterg/.terraformrc
+2019/12/19 15:14:13 [DEBUG] checking for credentials in "/Users/peterg/.terraform.d/plugins"
+2019/12/19 15:14:13 [INFO] CLI command args: []string{"show"}
+2019/12/19 15:14:13 [DEBUG] New state was assigned lineage "7066b453-b633-adac-2957-130a7150faff"
