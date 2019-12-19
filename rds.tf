@@ -1,7 +1,6 @@
 # Create and RDS Instance for MySQL
 
 resource "aws_db_subnet_group" "default" {
-  name       = "main"
   subnet_ids = "${data.aws_eks_cluster.this.vpc_config.0.subnet_ids}"
 
   tags = {
